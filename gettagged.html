@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" ng-app>
+<head>
+	<meta charset="utf-8">
+	<title>Atoms For Peace</title>
+	<link rel="stylesheet" href="../css/amokshop.css">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+  <script>
+    $(document).ready(function(){
+     
+       $("#apidata").on({
+          mouseenter: function() { this.play(); },
+          mouseleave: function() { this.pause(); }
+       }, '.video');
+
+      function getJSON(api) {
+        $.ajax({
+          url: "getjson.php?api=" + api
+        }).done(function(data){
+          data = $.parseJSON(data);
+          $.each(data, function(i, item){
+            $('#apidata').append($('<div class="' + api +' post" data-sort="' 
+              + item.ts + '"><a href="' + item.url + '" target="_blank">' 
+              + item.text + '<p class="date">' + item.created + '</p></a></div>'));
+          });
+          var list = $('#apidata');
+          var list2 = $('#apidata2');
+          var listItems = list.find('.post').sort(function(a,b){
+            return parseInt($(b).attr('data-sort'))-parseInt($(a).attr('data-sort'));
+          });
+          list.find('.post').remove();
+          list.append(listItems.slice(0,68));
+          list2.append(listItems.slice(68));
+        });
+
+      }
+       
+      getJSON('twitter');
+      getJSON('instagram');
+      getJSON('vine');
+      getJSON('facebook');
+ 
+    });
+</script>-->
+  <?php //include 'gettweets.php' ?>
+</head>
+<body>
+<div id="content">
+<div id="header">
+<iframe class="fb" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fatomsforpeace&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=137611429640196" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>
+<div class="twt">
+<div id="tube" class="g-ytsubscribe" data-channel="atomsforpeacetv" data-theme="dark"></div>
+<script src="https://apis.google.com/js/plusone.js"></script>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="thomyorke" data-hashtags="AMOK">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div><!--twt-->
+
+
+<h3 class="preorder">AMOK Out Now // Available from // <a href="http://store.atomsforpeace.info/">AMOK Store</a> // <a href="http://smarturl.it/AMOK">iTunes</a><!--<a href="http://smarturl.it/amoktrade" target="_blank">Rough Trade</a> // <a href="http://smarturl.it/amokbanquet" target="_blank">Banquet</a> --></h3>
+</div><!--header-->
+
+<div class="item" id="one">
+<div class="inner title">
+<h1 class="header">Atoms For Peace</h1>
+<h3 class="amok">AMOK</h3>
+</div><!--inner-->
+</div><!--item-->
+
+
+<div class="item" id="feed">
+  <div class="inner" id="apidata">
+  </div><!--inner-->
+  <div class="inner" id="apidata2">
+  </div>
+</div><!--feed-->
+
+<div id="footer">
+<div class="social">
+<a href="http://tickets.waste.uk.com/" class="highlight" target="_blank">LIVE DATES ANNOUNCED – TICKET INFO</a> //
+<a href="https://twitter.com/thomyorke">Twitter</a> // <a href="http://www.facebook.com/atomsforpeace">Facebook</a> // <a href="http://www.youtube.com/atomsforpeacetv">Youtube</a> // 
+
+<a href="#" onclick="document.getElementById('backgroundaudio').muted = true;">Mute Audio</a>
+
+</div><!--social-->
+
+<form method="post" name="subscribeform" id="subscribeformwhole" action="http://mailinglists.beggars.com/?p=subscribe&id=105"><div style="display: none"><input type="text" name="VerificationCodeX" value="" size="20" /></div> 
+    <input type="hidden" name="list[200]" value="signup" /><input type="hidden" name="listname[200]" value="Atoms For Peace" /> 
+    <input type="text" name="email" id="emailaddress" value="your@email.com" onFocus="fieldFocus(this, 'your@email.com');" onBlur="fieldBlur(this, 'your@email.com');" /> 
+<input type="hidden" name="attribute4" value="2">
+<input type="submit" value="Signup" name="subscribe" id="gobutton"  onClick="checkForm(); return false" />
+</form>
+</div><!--footer-->
+
+<!-- Extra Background -->
+
+<div class="topcorner"></div><!--topcorner-->
+<div class="skydivider"></div><!--skydivider-->
+<div class="topangle"></div><!--topangle-->
+<div class="leftcorner"></div><!--leftcorner-->
+<div class="divider"></div><!--divider-->
+
+</div><!--content-->
+
+
+<!-- Artwork-->
+
+<div id="art"> 
+
+<div id="top">
+<div id="one" class="panel"><img src="../images/panels/pantop1.png" alt="1"/></div>
+<div id="two" class="panel"><img src="../images/panels/pantop2.png" alt="2"/></div>
+<div id="three" class="panel"><img src="../images/panels/pantop3.png" alt="3"/></div>
+<div id="four" class="panel"><img src="../images/panels/pantop4.png" alt="4"/></div>
+<div id="five" class="panel"><img src="../images/panels/pantop5.png" alt="5"/></div>
+<div id="six" class="panel"><img src="../images/panels/pantop6.png" alt="6"/></div>
+<div id="seven" class="panel"><img src="../images/panels/pantop7.png" alt="7"/></div>
+<div id="eight" class="panel"><img src="../images/panels/pantop8.png" alt="8"/></div>
+<div id="nine" class="panel"><img src="../images/panels/pantop9.png" alt="9"/></div>
+<div id="ten" class="panel"><img src="../images/panels/pantop10.png" alt="10"/></div>
+<div id="eleven" class="panel"><img src="../images/panels/pantop11.png" alt="11"/></div>
+<div id="twelve" class="panel"><img src="../images/panels/pantop12.png" alt="12"/></div>
+</div><!--top-->
+
+<div id="bottom">
+<div id="one" class="panel"><img src="../images/panels/panbottom1.png" alt="1"/></div>
+<div id="two" class="panel"><img src="../images/panels/panbottom2.png" alt="2"/></div>
+<div id="three" class="panel"><img src="../images/panels/panbottom3.png" alt="3"/></div>
+<div id="four" class="panel"><img src="../images/panels/panbottom4.png" alt="4"/></div>
+<div id="five" class="panel"><img src="../images/panels/panbottom5.png" alt="5"/></div>
+<div id="six" class="panel"><img src="../images/panels/panbottom6.png" alt="6"/></div>
+<div id="seven" class="panel"><img src="../images/panels/panbottom7.png" alt="7"/></div>
+<div id="eight" class="panel"><img src="../images/panels/panbottom8.png" alt="8"/></div>
+<div id="nine" class="panel"><img src="../images/panels/panbottom9.png" alt="9"/></div>
+<div id="ten" class="panel"><img src="../images/panels/panbottom10.png" alt="10"/></div>
+<div id="eleven" class="panel"><img src="../images/panels/panbottom11.png" alt="11"/></div>
+<div id="twelve" class="panel"><img src="../images/panels/panbottom12.png" alt="12"/></div>
+</div><!--bottom-->
+
+</div><!--art-->
+
+<audio id="backgroundaudio" autoplay="autoplay" controls="none" loop="loop">  
+  <source src="audio/amokloop.ogg" type="audio/ogg">
+  <source src="audio/amokloop.mp3" type="audio/mpeg">
+</audio>
+</body>
+</html>
