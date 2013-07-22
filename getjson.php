@@ -33,7 +33,7 @@ function post_data($url, $credentials)
 	return $data;
 }
  
-$tag = isset($_GET['tag'])? filter_input(INPUT_GET, 'tag', FILTER_SANITIZE_STRING) : "radiohead";
+$tag = isset($_GET['tag'])? filter_input(INPUT_GET, 'tag', FILTER_SANITIZE_STRING) : "drawingroom";
 $api = filter_input(INPUT_GET, 'api', FILTER_SANITIZE_STRING);
 
 if ($api === 'vine') {
@@ -44,7 +44,7 @@ if ($api === 'vine') {
 	$vine2 = "https://api.vineapp.com/timelines/tags/$tag";
 	$result = json_decode(get_data($vine2, $key));
 
-	var_dump($result->data->records); die;
+	//var_dump($result->data->records); die;
 
 	foreach ($result->data->records as $record)
 	{
@@ -107,7 +107,7 @@ if ($api === 'vine') {
 	$url = 'https://api.twitter.com/1.1/search/tweets.json';
 	$request_method = 'GET';
 
-	$getfields = "?q=%23$tag";
+	$getfields = "?q=%23$tag+exclude:retweets";
 
 	$twitter = new TwitterAPIExchange($settings);
 	$result = $twitter->setGetField($getfields)
