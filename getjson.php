@@ -149,10 +149,13 @@ if ($api === 'vine') {
 		{
 			if (strpos($status->text, $badword) !== false) $kosher = false;
 		}
+		$media = isset($status->entities->media[0]->media_url)? $status->entities->media[0]->media_url: null;
+		$text = $status->text;
+		if ($media) $text .= '<img src="' . $media . '">';
 		if ($kosher) {
-			$results[] = array('text'=>$status->text, 'created'=>date('M d H:i:s', strtotime($status->created_at)),
+			$results[] = array('text'=>$text, 'created'=>date('M d H:i:s', strtotime($status->created_at)),
 				'url'=>'https://twitter.com/' . $status->user->screen_name . '/status/' . $status->id,
-				'ts'=>strtotime($status->created_at));
+				'ts'=>strtotime($status->created_at), 'media'=>$media);
 		}
 	}
 
@@ -160,20 +163,10 @@ if ($api === 'vine') {
 
 }
 
-/*function cmp($a, $b)
-{
-	if ($a['created'] == $b['created']) {
-		return 0;
-	}
-	return ($a['created'] < $b['created']) ? 1 : -1;
-}*/
-
 if (!empty($results)) 
 {
-	//usort($results, "cmp");
 	echo json_encode($results);
 } else {
-	//echo "No results found.";
 	echo json_encode(array());
 }
 
