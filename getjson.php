@@ -5,6 +5,8 @@
 require('config.php');
 require_once('twitter-api-php/TwitterAPIExchange.php');
 
+$blacklist = array('abcrn', 'boobs');
+
 function get_data($url, $key=null)
 {
 	$ch = curl_init();
@@ -57,15 +59,34 @@ if ($api === 'vine') {
 
 } elseif ($api === 'instagram') {
 
-	$inst =  "https://api.instagram.com/v1/tags/$tag/media/recent?client_id="
-			. $instagram_client_id;
-	$result = json_decode(get_data($inst));
+	function instagram_page($next) {
 
-	foreach ($result->data as $photo)
-	{
-		$img_tag = "<img src='" . $photo->images->standard_resolution->url . "'>";
-		$results[] = array('text'=>$img_tag, 'created'=>date('M d H:i:s', $photo->created_time), 
-			'url'=>$photo->link, 'ts'=>$photo->created_time);
+		global $results, $tag, $instagram_client_id;
+
+		$inst =  "https://api.instagram.com/v1/tags/$tag/media/recent?client_id="
+				. $instagram_client_id;
+		if ($next) $inst .= "&max_id=" . $next;
+
+		$result = json_decode(get_data($inst));
+
+		$next = $result->pagination->next_max_tag_id;
+
+		foreach ($result->data as $photo)
+		{
+			$img_tag = "<img src='" . $photo->images->standard_resolution->url . "'>";
+			$results[] = array('text'=>$img_tag, 'created'=>date('M d H:i:s', $photo->created_time), 
+				'url'=>$photo->link, 'ts'=>$photo->created_time);
+		}
+
+		return $next;
+	}
+
+	$timestodo = 3;
+	$next = false;
+
+	while ($timestodo > 0) {
+		--$timestodo;
+		$next = instagram_page($next, $tag, $instagram_client_id);
 	}
 
 	//echo "Instagram loaded: " . xdebug_time_index() . "<br/>";
@@ -92,10 +113,15 @@ if ($api === 'vine') {
 		/* else 
 			{ var_dump($message); throw new Exception("Unknown FaceBook message type"); } */
 
-		if (strlen($text)>500) $text = substr($text, 0, 500) . "...";
-
-		$results[] = array('text'=>$text, 'created'=>date('M d H:i:s', strtotime($message->created_time)), 
-			'url'=>"https://www.facebook.com/" . $message->id, 'ts'=>strtotime($message->created_time));
+		$kosher = true;
+		foreach ($blacklist as $badword) {
+			if (strpos($text, $badword) !== false) $kosher = false;
+		}
+		if ($kosher) {
+			if (strlen($text)>500) $text = substr($text, 0, 500) . "...";
+			$results[] = array('text'=>$text, 'created'=>date('M d H:i:s', strtotime($message->created_time)), 
+				'url'=>"https://www.facebook.com/" . $message->id, 'ts'=>strtotime($message->created_time));
+		}
 	}
 
 	//echo "FaceBook loaded: " . xdebug_time_index() . "<br/>";
@@ -118,9 +144,16 @@ if ($api === 'vine') {
 
 	foreach ($result->statuses as $status) 
 	{
-		$results[] = array('text'=>$status->text, 'created'=>date('M d H:i:s', strtotime($status->created_at)),
-			'url'=>'https://twitter.com/' . $status->user->screen_name . '/status/' . $status->id,
-			'ts'=>strtotime($status->created_at));
+		$kosher = true;
+		foreach ($blacklist as $badword)
+		{
+			if (strpos($status->text, $badword) !== false) $kosher = false;
+		}
+		if ($kosher) {
+			$results[] = array('text'=>$status->text, 'created'=>date('M d H:i:s', strtotime($status->created_at)),
+				'url'=>'https://twitter.com/' . $status->user->screen_name . '/status/' . $status->id,
+				'ts'=>strtotime($status->created_at));
+		}
 	}
 
 	//echo "Twitter loaded: " . xdebug_time_index() . "<br/>";
